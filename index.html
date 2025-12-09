@@ -8,16 +8,13 @@
     <!-- Google Fonts: romantic + clean -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style>
-        /* 
-      ============ GLOBAL STYLES ============
-      Body background, font, centering
-    */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,38 +26,94 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at top, #ffe4ec 0%, #f9d6ff 40%, #fde1ff 70%, #f7f7ff 100%);
             font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            color: #1f2933;
+            color: #f9fafb;
             overflow: hidden;
+            background: #050510;
         }
 
-        /* হালকা blur/glass feel এর main card + subtle floating animation */
+        /* ===== STRUCTURED FLOATING PHOTO BACKGROUND (NO OVERLAP) ===== */
+        .bg-photos {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+            display: flex;
+            justify-content: space-evenly;
+            padding: 20px 8px;
+            gap: 8px;
+        }
+
+        .bg-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: floatColumn 35s linear infinite;
+        }
+
+        /* duplicate stack for seamless loop */
+        .bg-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bg-photo-card {
+            width: clamp(90px, 20vw, 130px);
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow:
+                0 10px 24px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.18);
+            opacity: 0.22;
+        }
+
+        .bg-photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+        }
+
+        @keyframes floatColumn {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        /* slightly different speed per column (subtle parallax) */
+        .bg-column:nth-child(2) {
+            animation-duration: 38s;
+        }
+
+        .bg-column:nth-child(3) {
+            animation-duration: 32s;
+        }
+
+        /* ===== MAIN LOVE CONTENT (NO GLASS BOX) ===== */
         .love-wrapper {
             position: relative;
-            width: min(480px, 95vw);
-            padding: 24px 20px 30px;
+            width: min(480px, 100vw);
+            padding: 16px 16px 24px;
             border-radius: 24px;
-            background: rgba(255, 255, 255, 0.36);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow:
-                0 18px 45px rgba(255, 0, 122, 0.18),
-                0 0 0 1px rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             text-align: center;
             animation: floatCard 12s ease-in-out infinite alternate;
         }
 
-        /* কার্ডের চারপাশে glow */
         .love-wrapper::before {
-            content: "";
-            position: absolute;
-            inset: -2px;
-            border-radius: inherit;
-            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.4), transparent 60%);
-            opacity: 0.9;
-            z-index: -1;
+            content: none;
         }
 
         @keyframes floatCard {
@@ -69,7 +122,7 @@
             }
 
             50% {
-                transform: translateY(-6px);
+                transform: translateY(-4px);
             }
 
             100% {
@@ -77,23 +130,22 @@
             }
         }
 
-        /* Title */
         .title {
             font-family: "Great Vibes", cursive;
-            font-size: 2.2rem;
+            font-size: clamp(2rem, 5vw, 2.6rem);
             margin-bottom: 4px;
-            color: #c2185b;
+            color: #ffe4f2;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
         }
 
         .subtitle {
-            font-size: 0.95rem;
-            color: #6b7280;
+            font-size: clamp(0.86rem, 2.6vw, 0.95rem);
+            color: #e5e7eb;
             margin-bottom: 18px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
         }
 
-        /* 
-      ========= BUTTON =========
-    */
+        /* BUTTON */
         .love-button {
             display: inline-flex;
             align-items: center;
@@ -106,17 +158,16 @@
             background: linear-gradient(135deg, #ff4b8f, #ff758c);
             color: #fff;
             font-weight: 600;
-            font-size: 0.98rem;
+            font-size: clamp(0.9rem, 3vw, 0.98rem);
             cursor: pointer;
             box-shadow:
-                0 12px 28px rgba(255, 75, 143, 0.45),
-                0 0 0 1px rgba(255, 255, 255, 0.7);
+                0 12px 28px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.4);
             position: relative;
             overflow: hidden;
             transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
         }
 
-        /* Button pulse ring effect on click (JS দিয়ে .pulse class add হবে) */
         .love-button::after {
             content: "";
             position: absolute;
@@ -140,20 +191,19 @@
             transform-origin: center;
         }
 
-        /* Button hover / focus */
         .love-button:hover {
             transform: translateY(-1px) scale(1.01);
             box-shadow:
-                0 16px 32px rgba(255, 75, 143, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.9);
+                0 16px 32px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.7);
             filter: brightness(1.03);
         }
 
         .love-button:active {
             transform: translateY(1px) scale(0.99);
             box-shadow:
-                0 8px 18px rgba(255, 75, 143, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.9);
+                0 8px 18px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.6);
         }
 
         .love-button:focus-visible {
@@ -181,9 +231,6 @@
             }
         }
 
-        /* 
-      ========= MESSAGE + IMAGE CONTAINER =========
-    */
         .content {
             margin-top: 18px;
             display: flex;
@@ -194,26 +241,25 @@
 
         .message-box {
             width: 100%;
-            padding: 14px 14px 16px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 246, 0.9));
-            border: 1px solid rgba(255, 192, 203, 0.7);
-            box-shadow: 0 8px 24px rgba(255, 182, 193, 0.4);
-            min-height: 70px;
+            max-width: 360px;
+            padding: 10px 10px 12px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.55);
+            border: 1px solid rgba(248, 250, 252, 0.16);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-size: 0.98rem;
-            color: #4b5563;
+            font-size: clamp(0.86rem, 2.7vw, 0.96rem);
+            color: #f9fafb;
             line-height: 1.5;
             opacity: 0;
             transform: translateY(10px);
-            /* smooth text rendering */
             -webkit-font-smoothing: antialiased;
         }
 
-        /* message visible + fadeUp animation class */
         .message-box.show {
             animation: fadeUp 0.6s ease forwards;
         }
@@ -221,11 +267,11 @@
         .image-wrapper {
             width: 100%;
             max-width: 260px;
-            border-radius: 22px;
+            border-radius: 18px;
             overflow: hidden;
             position: relative;
-            background: radial-gradient(circle at top, #ffe4ef, #ffd1f3);
-            padding: 4px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 3px;
             opacity: 0;
             transform: translateY(8px) scale(0.96);
         }
@@ -235,12 +281,12 @@
         }
 
         .image-inner {
-            border-radius: 18px;
+            border-radius: 14px;
             overflow: hidden;
             position: relative;
             box-shadow:
-                0 18px 30px rgba(255, 20, 147, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.9);
+                0 18px 30px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(255, 255, 255, 0.5);
         }
 
         .image-inner img {
@@ -250,12 +296,11 @@
             object-fit: cover;
         }
 
-        /* ছোট glow overlay */
         .image-inner::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.45), transparent 55%);
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.35), transparent 55%);
             mix-blend-mode: screen;
             pointer-events: none;
         }
@@ -289,107 +334,122 @@
             }
         }
 
-        /* 
-      ========= EXTRA META AREA =========
-      Click counter + tiny note
-    */
         .meta {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #6b7280;
+            margin-top: 8px;
+            font-size: clamp(0.7rem, 2.3vw, 0.8rem);
+            color: #e5e7eb;
             display: flex;
             flex-direction: column;
             gap: 4px;
             align-items: center;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
         }
 
         .click-counter {
             padding: 6px 10px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 192, 203, 0.7);
-            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.5);
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            max-width: 90vw;
         }
 
         .click-counter span#clickCount {
             font-weight: 600;
-            color: #db2777;
+            color: #f9a8d4;
             min-width: 18px;
             text-align: center;
         }
 
         .tiny-note {
             font-size: 0.72rem;
-            opacity: 0.85;
+            opacity: 0.9;
+            text-align: center;
+            max-width: 260px;
         }
 
-        /* 
-      ========= FLOATING HEARTS BACKGROUND =========
-      ছোট ছোট হার্ট উপরে উঠবে, fade হবে
-    */
-        .floating-hearts {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: -2;
-        }
+        /* ===== RESPONSIVE BREAKPOINTS ===== */
 
-        .heart {
-            position: absolute;
-            font-size: 16px;
-            opacity: 0;
-            animation: floatUp 6s linear forwards;
-            filter: drop-shadow(0 4px 8px rgba(255, 105, 180, 0.6));
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(12vh) scale(0.7);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.9;
-            }
-
-            60% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-110vh) scale(1.1);
-                opacity: 0;
-            }
-        }
-
-        /* 
-      ========= RESPONSIVE =========
-    */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .love-wrapper {
-                padding: 20px 16px 24px;
-                border-radius: 20px;
+                padding: 16px 14px 22px;
             }
 
-            .title {
-                font-size: 1.9rem;
+            .image-wrapper {
+                max-width: 240px;
+            }
+
+            .bg-photo-card {
+                opacity: 0.24;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+
+            .love-wrapper {
+                width: 100vw;
+                padding: 14px 12px 20px;
+            }
+
+            .image-wrapper {
+                max-width: 220px;
+            }
+
+            .bg-photo-card {
+                opacity: 0.2;
             }
 
             .subtitle {
-                font-size: 0.88rem;
+                margin-bottom: 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .love-wrapper {
+                padding: 10px 8px 16px;
+            }
+
+            .image-wrapper {
+                max-width: 200px;
+            }
+
+            .message-box {
+                font-size: 0.8rem;
+                padding: 8px;
             }
 
             .love-button {
                 width: 100%;
-                font-size: 0.96rem;
+                padding-inline: 14px;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding-top: 4px;
             }
 
-            .meta {
-                font-size: 0.78rem;
+            .love-wrapper {
+                padding: 8px 10px 12px;
+            }
+
+            .content {
+                gap: 8px;
+            }
+
+            .subtitle {
+                margin-bottom: 10px;
+            }
+
+            .image-wrapper {
+                max-width: 200px;
             }
         }
     </style>
@@ -397,27 +457,72 @@
 
 <body>
 
-    <!-- Floating hearts layer -->
-    <div class="floating-hearts" id="floatingHearts"></div>
+    <!-- STRUCTURED FLOATING PHOTO BACKGROUND -->
+    <div class="bg-photos">
+        <!-- Column 1 -->
+        <div class="bg-column">
+            <div class="bg-stack">
+                <div class="bg-photo-card"><img src="./assest/r1.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r2.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r3.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r4.jpg" alt=""></div>
+            </div>
+            <!-- duplicate for seamless loop -->
+            <div class="bg-stack">
+                <div class="bg-photo-card"><img src="./assest/r1.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r2.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r3.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r4.jpg" alt=""></div>
+            </div>
+        </div>
 
-    <!-- Main card -->
+        <!-- Column 2 -->
+        <div class="bg-column">
+            <div class="bg-stack">
+                <div class="bg-photo-card"><img src="./assest/r5.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r6.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r7.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r3.jpg" alt=""></div>
+            </div>
+            <div class="bg-stack">
+                <div class="bg-photo-card"><img src="./assest/r5.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r6.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r7.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r3.jpg" alt=""></div>
+            </div>
+        </div>
+
+        <!-- Column 3 -->
+        <div class="bg-column">
+            <div class="bg-stack">
+                <div class="bg-photo-card"><img src="./assest/r2.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r4.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r1.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r7.jpg" alt=""></div>
+            </div>
+            <div class="bg-stack">
+                <div class="bg-photo-card"><img src="./assest/r2.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r4.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r1.jpg" alt=""></div>
+                <div class="bg-photo-card"><img src="./assest/r7.jpg" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
     <main class="love-wrapper">
         <h1 class="title">Feel My Love</h1>
         <p class="subtitle">
             Press the button & let your heart read mine. 💌
         </p>
 
-        <!-- Central button -->
         <button class="love-button" id="loveButton" type="button">
             <span class="heart-icon">♥</span>
             <span>Click to Feel My Love</span>
         </button>
 
-        <!-- Message + image -->
         <section class="content">
-            <div class="message-box" id="messageBox">
-                <!-- Romantic message এখানে JS দিয়ে type হয়ে আসবে -->
-            </div>
+            <div class="message-box" id="messageBox"></div>
 
             <div class="image-wrapper" id="imageWrapper">
                 <div class="image-inner">
@@ -425,37 +530,20 @@
                 </div>
             </div>
 
-            <!-- Extra impressive part: click counter + small note -->
             <div class="meta">
                 <div class="click-counter">
                     আজ তোমার কথা মনে পড়েছে
                     <span id="clickCount">0</span>
                     বার 💗
                 </div>
-                <div class="tiny-note">
-                    *প্রতিবার চাপ দিলে আরেকটা ছোট secret feeling unlock হয়…*
-                </div>
             </div>
         </section>
     </main>
 
-    <script>
-        /*
-          ====================
-          JAVASCRIPT LOGIC
-          ====================
-          ১) romantic messages-এর array
-          ২) images-এর array (তুমি নিজের folder-এর ছবি use করছো)
-          ৩) button click করলে:
-              - random message + image
-              - typewriter effect এ message আসবে
-              - smooth animation trigger হবে
-              - floating hearts burst হবে
-              - click counter বাড়বে
-              - button-এ pulse glow হবে
-        */
+    <!-- Background music -->
+    <audio id="bgMusic" src="./assest/music.mp3" loop preload="auto"></audio>
 
-        // Romantic message list (ইচ্ছেমতো বাড়াতে/কমাতে পারো)
+    <script>
         const messages = [
             "তোমার সাথে কথা বলার পর সারাদিন খুব সুন্দর কাটে — যেন সবকিছুই একটু বেশি রঙিন লাগে।",
             "তোমার একটুকরো হাসি আমার পুরো দিনের মুড বদলে দেয়… তুমি বুঝতেই পারো না কতটা স্পেশাল তুমি আমার জন্য।",
@@ -464,7 +552,8 @@
             "তোমার সাথে দেখা করার প্ল্যান ভাবলেই আমার ভিতরটা ছোট্ট বাচ্চার মতো excited হয়ে ওঠে।",
             "তুমি না থাকলে সবকিছুই ঠিক থাকে, শুধু আমার মনটাই একটু হারিয়ে যায় কোথায় যেন…",
             "তোমার voice শুনলেই সব স্ট্রেস যেন ধীরে ধীরে গলে যায়, আর শুধু শান্তি থাকে।",
-            "তুমি পাশে থাকো আর না থাকো, আমার ছোট ছোট স্বপ্নের ভেতর তুমি সবসময়ই থাকো।", "তোমার হাতের কবজির সেই নরম ছোঁয়া… uff, আমার পুরো শরীর যেন এক মুহূর্তে শান্ত হয়ে যায়। তোমার touch-এ একটা আলাদা জাদু আছে।",
+            "তুমি পাশে থাকো আর না থাকো, আমার ছোট ছোট স্বপ্নের ভেতর তুমি সবসময়ই থাকো।",
+            "তোমার হাতের কবজির সেই নরম ছোঁয়া… uff, আমার পুরো শরীর যেন এক মুহূর্তে শান্ত হয়ে যায়। তোমার touch-এ একটা আলাদা জাদু আছে।",
             "তোমার দেওয়া সেই গোলাপটা আমি এখনো খুব যত্নে রেখে দিয়েছি… কারণ সেটা শুধু একটা ফুল নয়, সেটা তোমার ভালোবাসার গন্ধে ভরা একটা স্মৃতি।",
             "তোমার মেহেদির মাঝে যখন আমার নামটা দেখি… তখন মনে হয় তুমি আমাকে তোমার হৃদয়ের খুব কাছের কোনো জায়গায় ধরে রেখেছো।",
             "তোমার কবজির উষ্ণতা আর নরমতা… আমি যতবার ধরেছি, ততবার মনে হয়েছে তুমি আমার জন্যই তৈরি।",
@@ -481,8 +570,6 @@
             "তোমার voice শুনলেই সব স্ট্রেস যেন ধীরে ধীরে গলে যায়, আর শুধু শান্তি থাকে।",
             "তুমি পাশে থাকো আর না থাকো, আমার ছোট ছোট স্বপ্নের ভেতর তুমি সবসময়ই থাকো।",
 
-            // 🔥 Personal স্মৃতি গুলো এখানে থেকে শুরু 🔥
-
             "তোমার হাতের বানানো চিকেন কাবাবটা uff… শুধু taste না, সেখানে তোমার যত্ন আর ভালোবাসার একটা আলাদা flavour থাকে, যেটা আমি কোনও রেস্টুরেন্টে কোনওদিন পাই না।",
             "যেদিন তুমি আমার জন্য চিকেন কাবাব বানিয়েছিলে, সেদিনই বুঝেছিলাম — কেউ যদি আমাকে এইভাবে নিজের হাতে খাওয়াতে চায়, তার কাছে আমি সত্যিই খুব গুরুত্বপূর্ণ।",
             "তোমার দেওয়া ছোট্ট গোলাপটার পাপড়িগুলো হয়তো একদিন শুকিয়ে যাবে, কিন্তু ওই ফুলের সঙ্গে জড়িয়ে থাকা তোমার স্মিত হাসিটা আমি আমার মনেই ফ্রেম করে রেখেছি।",
@@ -493,7 +580,6 @@
             "একেকটা স্মৃতি আছে আমাদের — তোমার রান্না, তোমার গোলাপ, তোমার মেহেদি — এগুলো শুধু জিনিস না, এগুলো আমার জন্য ছোট ছোট প্রমাণ যে তুমি সত্যিই আমাকে মন থেকে গুরুত্ব দাও।"
         ];
 
-        // Placeholder image URLs (তুমি নিজের path already সেট করেছো)
         const imageUrls = [
             "./assest/r1.jpg",
             "./assest/r2.jpg",
@@ -504,32 +590,28 @@
             "./assest/r7.jpg"
         ];
 
-        // DOM elements ধরছি
         const loveButton = document.getElementById("loveButton");
         const messageBox = document.getElementById("messageBox");
         const imageWrapper = document.getElementById("imageWrapper");
         const loveImage = document.getElementById("loveImage");
-        const floatingHearts = document.getElementById("floatingHearts");
         const clickCountSpan = document.getElementById("clickCount");
+        const bgMusic = document.getElementById("bgMusic");
 
-        // Click counter state
         let clickCount = 0;
-
-        // Typewriter effect-এর জন্য interval tracking
         let typingInterval = null;
+        let musicStarted = false;
+        let fadeInterval = null;
+        let isFirstClick = true;
 
-        // Random helper: ০ থেকে (max-1) এর মধ্যে একটি random integer
+        const TARGET_VOLUME = 0.6;
+        const FADE_DURATION = 2000;
+        const FADE_STEPS = 20;
+
         function getRandomIndex(max) {
             return Math.floor(Math.random() * max);
         }
 
-        /*
-          Typewriter effect:
-          - messageBox-এর text এক একটি character করে ধীরে ধীরে দেখাবে
-          - আগের interval clear করে নতুন করে শুরু করা হবে
-        */
         function typeMessage(element, text) {
-            // আগের typing চলে থাকলে থামিয়ে দিচ্ছি
             if (typingInterval) {
                 clearInterval(typingInterval);
                 typingInterval = null;
@@ -537,7 +619,7 @@
 
             element.textContent = "";
             let index = 0;
-            const speed = 25; // millisecond প্রতি character
+            const speed = 25;
 
             typingInterval = setInterval(() => {
                 element.textContent += text.charAt(index);
@@ -549,105 +631,75 @@
             }, speed);
         }
 
-        // Button click handler
+        function fadeInMusic() {
+            if (!bgMusic) return;
+
+            if (fadeInterval) {
+                clearInterval(fadeInterval);
+                fadeInterval = null;
+            }
+
+            bgMusic.volume = 0;
+            const step = TARGET_VOLUME / FADE_STEPS;
+            let currentStep = 0;
+
+            fadeInterval = setInterval(() => {
+                currentStep++;
+                const newVolume = Math.min(TARGET_VOLUME, bgMusic.volume + step);
+                bgMusic.volume = newVolume;
+
+                if (currentStep >= FADE_STEPS) {
+                    clearInterval(fadeInterval);
+                    fadeInterval = null;
+                }
+            }, FADE_DURATION / FADE_STEPS);
+        }
+
         loveButton.addEventListener("click", () => {
-            // Random message নির্বাচন
+            // music first click + fade-in
+            if (!musicStarted && bgMusic) {
+                bgMusic.volume = 0;
+                bgMusic.play()
+                    .then(() => {
+                        fadeInMusic();
+                    })
+                    .catch((err) => {
+                        console.log("Music play failed:", err);
+                    });
+                musicStarted = true;
+            }
+
+            // image: first time always r6, then random
+            let newImageUrl;
+            if (isFirstClick) {
+                newImageUrl = "./assest/r6.jpg";
+                isFirstClick = false;
+            } else {
+                newImageUrl = imageUrls[getRandomIndex(imageUrls.length)];
+            }
+
             const messageIndex = getRandomIndex(messages.length);
             const newMessage = messages[messageIndex];
 
-            // Random image নির্বাচন
-            const imageIndex = getRandomIndex(imageUrls.length);
-            const newImageUrl = imageUrls[imageIndex];
-
-            // Button pulse glow effect (temporary class)
             loveButton.classList.add("pulse");
             setTimeout(() => {
                 loveButton.classList.remove("pulse");
             }, 350);
 
-            // Message animation reset
             messageBox.classList.remove("show");
             imageWrapper.classList.remove("show");
-
-            // Reflow trick (animation পুনরায় চালানোর জন্য)
             void messageBox.offsetWidth;
             void imageWrapper.offsetWidth;
 
-            // Message typewriter দিয়ে সেট করছি
             typeMessage(messageBox, newMessage);
-
-            // Image set করছি
             loveImage.src = newImageUrl;
 
-            // এখন show class add করলে fadeUp + popIn animation চলবে
             messageBox.classList.add("show");
             imageWrapper.classList.add("show");
 
-            // Click counter update
             clickCount++;
             clickCountSpan.textContent = clickCount;
-
-            // প্রতিবার ক্লিকে কয়েকটা extra heart তৈরি করি
-            spawnHeartBurst();
         });
-
-        /*
-          ========== FLOATING HEARTS CREATOR ==========
-          হালকা aesthetic ব্যাকগ্রাউন্ডের জন্য periodicভাবে heart বানাবো,
-          আর button ক্লিক করলে ছোট burst তৈরি করব।
-        */
-
-        // একটিমাত্র floating heart তৈরি করার function
-        function createHeart(custom = false) {
-            const heart = document.createElement("span");
-            heart.classList.add("heart");
-            heart.textContent = "♥";
-
-            // random horizontal position (0% - 100%)
-            const randomLeft = Math.random() * 100;
-            heart.style.left = `${randomLeft}vw`;
-
-            // random size (small variation)
-            const size = 14 + Math.random() * 10; // 14px থেকে ~24px
-            heart.style.fontSize = `${size}px`;
-
-            // custom হলে (button click) একটু নিচ থেকে উঠবে
-            if (custom) {
-                heart.style.bottom = "0vh";
-            } else {
-                // default ক্ষেত্রে কিছুটা নিচ থেকে start
-                heart.style.bottom = `${-10 + Math.random() * 10}vh`;
-            }
-
-            floatingHearts.appendChild(heart);
-
-            // Animation শেষ হলে DOM থেকে remove করি
-            heart.addEventListener("animationend", () => {
-                heart.remove();
-            });
-        }
-
-        // Button ক্লিক করলে একটি ছোট burst effect
-        function spawnHeartBurst() {
-            const count = 5 + Math.floor(Math.random() * 4); // ৫–৮ টা হার্ট
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => createHeart(true), i * 130);
-            }
-        }
-
-        // Background হিসেবে নিয়মিত hearts আসবে (sceneটা 'alive' লাগার জন্য)
-        setInterval(() => {
-            createHeart(false);
-        }, 1400);
-
-        /*
-          Initial state:
-          => চাইলে প্রথম load-এই auto show করতে পারো – নিচের ৪ লাইন uncomment করলে
-        */
-        // const initialMessageIndex = getRandomIndex(messages.length);
-        // const initialMessage = messages[initialMessageIndex];
-        // typeMessage(messageBox, initialMessage);
-        // messageBox.classList.add("show");
     </script>
 </body>
 
